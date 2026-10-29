@@ -191,7 +191,13 @@ dialog::backdrop { background: rgba(20, 30, 60, 0.5); }
 .logo-big { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 4px; }
 .logo-big .name { font-size: 2.4rem; }
 .logo-big .lx, .logo-big .lo { width: 36px; height: 36px; font-size: 1.4rem; border-radius: 10px; }
-.start .sub { margin: 0 0 20px; color: var(--muted); font-size: 0.92rem; }
+.start .sub { margin: 0 0 12px; color: var(--muted); font-size: 0.92rem; }
+.startnote { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; }
+.startnote span { display: inline-flex; align-items: center; gap: 5px; background: var(--hover); border-radius: 999px; padding: 4px 10px 4px 7px; font-size: 0.74rem; font-weight: 500; white-space: nowrap; }
+.startnote svg.i { width: 14px; height: 14px; }
+.startnote .n1 svg { color: #4f46e5; }
+.startnote .n2 svg { color: #f59e0b; }
+.startnote .n3 svg { color: #16a34a; }
 .big { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; border-radius: 14px; font-weight: 600; font-size: 1.05rem; border: 0; margin-bottom: 10px; }
 .big.primary { color: #fff; background: linear-gradient(135deg, #4f46e5, #2563eb); box-shadow: 0 8px 20px rgba(79, 70, 229, 0.32); }
 .big.soft { color: var(--brand); background: var(--brand-soft); }
@@ -273,6 +279,7 @@ dialog::backdrop { background: rgba(20, 30, 60, 0.5); }
   <div class="start">
     <div class="logo-big" id="startTitle"><span class="name" data-i18n="title">Cờ Caro</span><span class="lx">X</span><span class="lo">O</span></div>
     <p class="sub" data-i18n="startSub">Ai xếp được 5 quân liên tiếp trước sẽ thắng</p>
+    <div class="startnote" id="startNote"></div>
     <button class="big primary" id="playBtn" type="button"><span data-icon="play"></span><span data-i18n="play">Chơi</span></button>
     <button class="big soft" id="startSettingsBtn" type="button"><span data-icon="gear"></span><span data-i18n="settings">Cài đặt</span></button>
     <div class="langrow">
@@ -354,7 +361,8 @@ dialog::backdrop { background: rgba(20, 30, 60, 0.5); }
     sad: I('<circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>'),
     target: I('<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>'),
     hash: I('<line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>'),
-    percent: I('<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>')
+    percent: I('<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>'),
+    shield: I('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>')
   };
   function bars(n) {
     var h = [7, 12, 17], s = "";
@@ -383,7 +391,7 @@ dialog::backdrop { background: rgba(20, 30, 60, 0.5); }
   // ---------- Ngôn ngữ ----------
   var LANG = {
     vi: {
-      title: "Cờ Caro", startSub: "Ai xếp được 5 quân liên tiếp trước sẽ thắng", play: "Chơi", replay: "Chơi lại", moves: "nước đi", games: "ván", rate: "tỉ lệ thắng", goesFirst: "{who} đi trước",
+      title: "Cờ Caro", startSub: "Ai xếp được 5 quân liên tiếp trước sẽ thắng", play: "Chơi", replay: "Chơi lại", moves: "nước đi", games: "ván", rate: "tỉ lệ thắng", goesFirst: "{who} đi trước", nAi: "Đấu với máy", nPvp: "2 người chơi", nBlockOn: "Chặn 2 đầu: Có", nBlockOff: "Chặn 2 đầu: Không", nLevel: "Độ khó: {l}",
       undo: "Đi lại", newGame: "Ván mới", settings: "Cài đặt", fit: "Vừa khung", zoomIn: "Phóng to", zoomOut: "Thu nhỏ",
       soundOn: "Tắt âm thanh", soundOff: "Bật âm thanh",
       gLang: "Ngôn ngữ", gMode: "Chế độ", gLevel: "Độ khó", gFirst: "Đi trước", gBlock: "Chặn 2 đầu", gTimer: "Thời gian", gSound: "Âm thanh", gSize: "Cỡ bàn",
@@ -403,7 +411,7 @@ dialog::backdrop { background: rgba(20, 30, 60, 0.5); }
       you: "Bạn", cpu: "Máy", p1: "Người chơi 1", p2: "Người chơi 2", drawLbl: "Hòa"
     },
     en: {
-      title: "Caro", startSub: "First to get 5 in a row wins", play: "Play", replay: "Play again", moves: "moves", games: "games", rate: "win rate", goesFirst: "{who} goes first",
+      title: "Caro", startSub: "First to get 5 in a row wins", play: "Play", replay: "Play again", moves: "moves", games: "games", rate: "win rate", goesFirst: "{who} goes first", nAi: "Vs computer", nPvp: "2 players", nBlockOn: "Blocked ends: On", nBlockOff: "Blocked ends: Off", nLevel: "Level: {l}",
       undo: "Undo", newGame: "New game", settings: "Settings", fit: "Fit to view", zoomIn: "Zoom in", zoomOut: "Zoom out",
       soundOn: "Mute sound", soundOff: "Turn sound on",
       gLang: "Language", gMode: "Mode", gLevel: "Level", gFirst: "First move", gBlock: "Blocked ends", gTimer: "Time", gSound: "Sound", gSize: "Board",
@@ -957,6 +965,11 @@ dialog::backdrop { background: rgba(20, 30, 60, 0.5); }
     sb.title = sl; sb.setAttribute("aria-label", sl);
     var pills = $("startLang").querySelectorAll("button");
     for (var i = 0; i < pills.length; i++) pills[i].setAttribute("aria-pressed", pills[i].getAttribute("data-lang") === settings.lang ? "true" : "false");
+    var lvK = { easy: "lEasy", medium: "lMed", hard: "lHard" }[settings.level] || "lMed";
+    $("startNote").innerHTML =
+      '<span class="n1">' + (aiOn() ? ICONS.robot : ICONS.users) + t(aiOn() ? "nAi" : "nPvp") + "</span>" +
+      '<span class="n2">' + ICONS.shield + t(blockRule() ? "nBlockOn" : "nBlockOff") + "</span>" +
+      (aiOn() ? '<span class="n3">' + bars(settings.level === "easy" ? 1 : (settings.level === "medium" ? 2 : 3)) + t("nLevel", { l: t(lvK) }) + "</span>" : "");
     renderTimer();
     updateZoomUI();
   }
